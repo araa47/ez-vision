@@ -1,0 +1,40 @@
+---
+name: test
+
+on:
+    workflow_call:
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Install uv
+              uses: astral-sh/setup-uv@v7
+              with:
+                  version: latest
+                  enable-cache: true
+                  cache-dependency-glob: uv.lock
+
+            - name: Set up Python
+              run: uv python install
+
+            - name: Install the project
+              run: uv sync --all-extras --dev
+
+            - name: Run Tests with Coverage
+              run: uv run pytest -m "not e2e" --cov --cov-report=term --cov-report=json:coverage.json --cov-report=html:htmlcov
+
+            - name: Upload coverage artifact
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: coverage-report
+                  path: |
+                      coverage.json
+                      htmlcov/
+                  retention-days: 30
