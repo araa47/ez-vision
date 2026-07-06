@@ -268,7 +268,7 @@ def _make_mock_gemini_response(
 
 def _build_google_modules(mock_genai, mock_google_auth=None):
     google_mod = ModuleType("google")
-    google_mod.genai = mock_genai  # type: ignore[attr-defined]
+    google_mod.genai = mock_genai  # ty: ignore[unresolved-attribute]
     modules: dict = {
         "google": google_mod,
         "google.genai": mock_genai,
@@ -277,7 +277,7 @@ def _build_google_modules(mock_genai, mock_google_auth=None):
         ),
     }
     if mock_google_auth is not None:
-        google_mod.auth = mock_google_auth  # type: ignore[attr-defined]
+        google_mod.auth = mock_google_auth  # ty: ignore[unresolved-attribute]
         modules["google.auth"] = mock_google_auth
         transport_mod = MagicMock()
         modules["google.auth.transport"] = transport_mod
@@ -512,7 +512,7 @@ def _build_imagen_mocks(response_json, auth_error=False, http_error=False):
     mock_httpx.HTTPStatusError = real_httpx.HTTPStatusError
 
     google_mod = ModuleType("google")
-    google_mod.auth = mock_google_auth  # type: ignore[attr-defined]
+    google_mod.auth = mock_google_auth  # ty: ignore[unresolved-attribute]
     transport_mod = MagicMock()
 
     modules: dict = {
