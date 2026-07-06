@@ -137,7 +137,7 @@ async def generate_gemini(
     try:
         response = await client.aio.models.generate_content(
             model=model,
-            contents=gen_contents,  # type: ignore[invalid-argument-type]
+            contents=gen_contents,  # ty: ignore[invalid-argument-type]
             config=types.GenerateContentConfig(
                 response_modalities=["TEXT", "IMAGE"],
                 image_config=types.ImageConfig(image_size=output_resolution),
@@ -273,7 +273,10 @@ def main(
         ),
     ] = None,
     project: Annotated[
-        str, typer.Option(help="Google Cloud project ID for Vertex AI (or set GOOGLE_CLOUD_PROJECT)")
+        str,
+        typer.Option(
+            help="Google Cloud project ID for Vertex AI (or set GOOGLE_CLOUD_PROJECT)"
+        ),
     ] = DEFAULT_PROJECT,
     location: Annotated[
         str, typer.Option(help="Google Cloud region for Vertex AI")
